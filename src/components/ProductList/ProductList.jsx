@@ -1,3 +1,4 @@
+// ProductList.jsx
 import React, { useState } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
@@ -13,19 +14,21 @@ import Nike7 from './images/2023-11-10 23.55.15.jpg';
 import Nike8 from './images/2023-11-10 23.55.10.jpg';
 
 const products = [
-  { id: '1', title: 'Название1', price: 5000, description: 'Синего цвета, прямые', img: Nike },
-  { id: '2', title: 'Название1', price: 12000, description: 'Зеленого цвета, теплая', img: Nike1 },
-  { id: '3', title: 'Название 2', price: 5000, description: 'Синего цвета, прямые', img: Nike3 },
-  { id: '4', title: 'Название 8', price: 122, description: 'Зеленого цвета, теплая', img: Nike4 },
-  { id: '5', title: 'Название 3', price: 5000, description: 'Синего цвета, прямые', img: Nike5 },
-  { id: '6', title: 'Название 7', price: 600, description: 'Зеленого цвета, теплая', img: Nike6 },
-  { id: '7', title: 'Название 4', price: 5500, description: 'Синего цвета, прямые', img: Nike7 },
-  { id: '8', title: 'Название 5', price: 12000, description: 'Зеленого цвета, теплая', img: Nike8 },
+  { id: '1', title: 'Название1', prices: { '41': 5000, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike, sizes: ['41', '42', '43'] },
+  { id: '2', title: 'Название1', prices: { '41': 12000, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike1, sizes: ['41', '42', '43'] },
+  { id: '3', title: 'Название 2', prices: { '41': 5000, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike3, sizes: ['41', '42', '43'] },
+  { id: '4', title: 'Название 8', prices: { '41': 122, '42': 133, '43': 144 }, description: 'Зеленого цвета, теплая', img: Nike4, sizes: ['41', '42', '43'] },
+  { id: '5', title: 'Название 3', prices: { '41': 5000, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike5, sizes: ['41', '42', '43'] },
+  { id: '6', title: 'Название 7', prices: { '41': 600, '42': 700, '43': 800 }, description: 'Зеленого цвета, теплая', img: Nike6, sizes: ['41', '42', '43'] },
+  { id: '7', title: 'Название 4', prices: { '41': 5500, '42': 6500, '43': 7500 }, description: 'Синего цвета, прямые', img: Nike7, sizes: ['41', '42', '43'] },
+  { id: '8', title: 'Название 5', prices: { '41': 12000, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike8, sizes: ['41', '42', '43'] },
 ];
+
 
 const getTotalPrice = (items = []) => {
   return items.reduce((acc, item) => {
-    return (acc += item.price);
+    const itemPrice = item.prices[item.selectedSize] || 0;
+    return (acc += itemPrice);
   }, 0);
 };
 
@@ -35,7 +38,7 @@ const ProductList = () => {
 
   const onSendData = useCallback(() => {
     const data = {
-      products: addedItems,
+      products: addedItems.map(({ selectedSize, ...rest }) => ({ ...rest, size: selectedSize })),
       totalPrice: getTotalPrice(addedItems),
       queryId,
     };
@@ -56,33 +59,24 @@ const ProductList = () => {
   }, [onSendData]);
 
   const onAdd = (product) => {
-    const alreadyAdded = addedItems.find((item) => item.id === product.id);
-    let newItems = [];
+    setAddedItems([...addedItems, product]);
 
-    if (alreadyAdded) {
-      newItems = addedItems.filter((item) => item.id !== product.id);
-    } else {
-      newItems = [...addedItems, product];
-    }
-
-    setAddedItems(newItems);
-
-    if (newItems.length === 0) {
+    if (addedItems.length === 0) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
       tg.MainButton.setParams({
-        text: `Купить ${getTotalPrice(newItems)}`,
+        text: `Купить ${getTotalPrice([...addedItems, product])}`,
       });
     }
   };
 
   return (
-    <div className={'list'}>
-      {products.map((item) => (
-        <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
-      ))}
-    </div>
+      <div className={'list'}>
+        {products.map((item) => (
+            <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
+        ))}
+      </div>
   );
 };
 
