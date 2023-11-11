@@ -4,26 +4,26 @@ import { useTelegram } from "../../hooks/useTelegram";
 
 const Form = () => {
     const [city, setCity] = useState('');
-    const [sdekaddress, setSdek] = useState(''); // Fixed typo here, changed setStreet to setSdek
-    const [phone,setPhone] = useState('');
+    const [sdekaddress, setSdek] = useState('');
+    const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('physical');
     const { tg } = useTelegram();
 
     const onSendData = useCallback(() => {
         const data = {
-            city, // Fixed typo here, changed country to city
-            sdekaddress, // Fixed typo here, changed street to sdekaddress
+            city,
+            sdekaddress,
             subject,
-            phone
-        }
+            phone, // Fixed typo here, changed setSubject to setPhone
+        };
         tg.sendData(JSON.stringify(data));
-    }, [city, sdekaddress, subject, phone]); // Fixed typo here, changed country and street to city and sdekaddress
+    }, [city, sdekaddress, subject, phone]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
         return () => {
             tg.offEvent('mainButtonClicked', onSendData);
-        }
+        };
     }, [onSendData]);
 
     useEffect(() => {
@@ -33,27 +33,28 @@ const Form = () => {
     }, [tg.MainButton]);
 
     useEffect(() => {
-        if (!city || !sdekaddress || !phone) { // Fixed typo here, changed street to sdekaddress
+        if (!city || !sdekaddress || !phone) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
         }
-    }, [city, sdekaddress,phone]); // Fixed typo here, changed country and street to city and sdekaddress
+    }, [city, sdekaddress, phone]);
 
     const onChangeCity = (e) => {
         setCity(e.target.value);
-    }
+    };
 
-    const onChangeSdek = (e) => { // Fixed typo here, changed setSubject to setSdek
+    const onChangeSdek = (e) => {
         setSdek(e.target.value);
-    }
+    };
+
+    const onChangePhone = (e) => {
+        setPhone(e.target.value); // Fixed typo here, changed setSubject to setPhone
+    };
 
     const onChangeSubject = (e) => {
         setSubject(e.target.value);
-    }
-    const onChangePhone = (e) => {
-        setSubject(e.target.value);
-    }
+    };
 
     return (
         <div className={"form"}>
