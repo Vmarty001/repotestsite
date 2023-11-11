@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import img2 from './vmaylogo2.png';
+import img2 from './vmaylogo1.png';
 
 
 
