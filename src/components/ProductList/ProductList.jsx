@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Импортируем компонент Link
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
@@ -40,7 +39,7 @@ const ProductList = () => {
       totalPrice: getTotalPrice(addedItems),
       queryId,
     };
-    fetch('http://85.119.146.179:8000/web-data', {
+    fetch('http://localhost:8000', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,15 +78,11 @@ const ProductList = () => {
   };
 
   return (
-      <div className={'list'}>
-        {products.map((item) => (
-            <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
-        ))}
-        {/* Добавляем кнопку Link */}
-        <Link to="/form">
-          <button>Заполнить форму</button>
-        </Link>
-      </div>
+    <div className={'list'}>
+      {products.map((item) => (
+        <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
+      ))}
+    </div>
   );
 };
 
