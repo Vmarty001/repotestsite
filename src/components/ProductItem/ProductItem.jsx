@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../Button/Button';
 import './ProductItem.css';
 
 const ProductItem = ({ product, className, onAdd }) => {
     const [selectedSize, setSelectedSize] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
+    useEffect(() => {
+        if (selectedSize) {
+            setSelectedProduct({ ...product, selectedSize, price: product.prices[selectedSize] });
+        } else {
+            setSelectedProduct(null);
+        }
+    }, [product, selectedSize]);
 
     const onSizeSelect = (size) => {
         setSelectedSize(size);
     };
 
     const onAddHandler = () => {
-        if (!selectedSize) {
+        if (selectedProduct) {
+            onAdd(selectedProduct);
+        } else {
             alert('Выберите размер');
-            return;
         }
-
-        const selectedProduct = { ...product, selectedSize, price: product.prices[selectedSize] };
-        onAdd(selectedProduct);
     };
 
     return (
@@ -27,7 +34,7 @@ const ProductItem = ({ product, className, onAdd }) => {
             <div className={'title'}>{product.title}</div>
             <div className={'description'}>{product.description}</div>
             <div className={'price'}>
-                <span><b>{selectedSize ? product.prices[selectedSize] : `От ${Math.min(...Object.values(product.prices))}`} Rub</b></span>
+                <span>Стоимость: <b>{product.prices[selectedSize] || 'От...'}</b></span>
             </div>
             <div className={'sizes'}>
                 {product.sizes && (
@@ -45,7 +52,7 @@ const ProductItem = ({ product, className, onAdd }) => {
                 )}
             </div>
             <Button className={'add-btn'} onClick={onAddHandler}>
-                Добавить в корзину
+                {selectedSize ? 'Добавить в корзину' : 'Выберите размер'}
             </Button>
         </div>
     );

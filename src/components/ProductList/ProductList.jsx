@@ -1,9 +1,7 @@
-// ProductList.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
-import { useCallback, useEffect } from 'react';
 import Nike from './images/pinknike.jpg';
 import Nike1 from './images/2023-11-10 23.55.38.jpg';
 import Nike3 from './images/2023-11-10 23.55.33.jpg';
@@ -24,11 +22,9 @@ const products = [
   { id: '8', title: 'Название 5', prices: { '41': 12000, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike8, sizes: ['41', '42', '43'] },
 ];
 
-
 const getTotalPrice = (items = []) => {
   return items.reduce((acc, item) => {
-    const itemPrice = item.prices[item.selectedSize] || 0;
-    return (acc += itemPrice);
+    return (acc += item.price);
   }, 0);
 };
 
@@ -38,7 +34,7 @@ const ProductList = () => {
 
   const onSendData = useCallback(() => {
     const data = {
-      products: addedItems.map(({ selectedSize, ...rest }) => ({ ...rest, size: selectedSize })),
+      products: addedItems,
       totalPrice: getTotalPrice(addedItems),
       queryId,
     };
@@ -59,14 +55,24 @@ const ProductList = () => {
   }, [onSendData]);
 
   const onAdd = (product) => {
-    setAddedItems([...addedItems, product]);
+    const alreadyAdded = addedItems.find((item) => item.id === product.id);
 
-    if (addedItems.length === 0) {
+    let newItems = [];
+
+    if (alreadyAdded) {
+      newItems = addedItems.map((item) => (item.id === product.id ? product : item));
+    } else {
+      newItems = [...addedItems, product];
+    }
+
+    setAddedItems(newItems);
+
+    if (newItems.length === 0) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
       tg.MainButton.setParams({
-        text: `Купить ${getTotalPrice([...addedItems, product])}`,
+        text: `Купить ${getTotalPrice(newItems)}`,
       });
     }
   };
