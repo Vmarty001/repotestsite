@@ -9,3 +9,18 @@
 .username {
     margin-left: auto;
 }
+
+/* Добавляем стили для логотипа */
+.logo {
+    align-items: center;
+    text-align:center
+    
+}
+
+/* Вместо .logo можно использовать тег img например: */
+/*
+.logo img {
+    margin: 0 auto;
+    max-width: 100px;
+}
+*/
