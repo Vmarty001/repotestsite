@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Импортируем компонент Link
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
@@ -78,11 +79,15 @@ const ProductList = () => {
   };
 
   return (
-    <div className={'list'}>
-      {products.map((item) => (
-        <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
-      ))}
-    </div>
+      <div className={'list'}>
+        {products.map((item) => (
+            <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
+        ))}
+        {/* Добавляем кнопку Link */}
+        <Link to="/form">
+          <button>Заполнить форму</button>
+        </Link>
+      </div>
   );
 };
 
