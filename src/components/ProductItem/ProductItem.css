@@ -38,12 +38,20 @@
     flex-wrap: wrap; /* Добавлено свойство flex-wrap для переноса кнопок на новую строку при необходимости */
 }
 
-.sizes button {
-    margin-right: 5px;
-    margin-bottom: 5px; /* Добавлено свойство margin-bottom для создания промежутка между кнопками */
-}
 
 .add-btn {
     width: 100%;
     margin-top: 10px;
+}
+.sizes button {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.sizes button.selected {
+    background-color: lightgreen;
+    border-color: green;
 }
