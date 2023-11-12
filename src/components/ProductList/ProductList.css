@@ -1,10 +1,36 @@
-.list {
+.product-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.categories {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.categories button {
+    padding: 10px;
+    margin: 0 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    transition: color 0.3s ease;
+}
+
+.categories button.active {
+    color: #007bff;
+}
+
+.product-list-items {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.item {
-    margin-right: 10px;
-    margin-bottom: 10px;
+.product-item {
+    margin: 10px;
 }

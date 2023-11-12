@@ -48,7 +48,7 @@ const ProductItem = ({ product, className, onAdd, onRemove }) => {
             <div className={'title'}>{product.title}</div>
             <div className={'description'}>{product.description}</div>
             <div className={'price'}>
-                <span>Стоимость: <b>{selectedSize ? product.prices[selectedSize] : `От ${minPrice}`}</b></span>
+                <span><b>{selectedSize ? product.prices[selectedSize] : `От ${minPrice}`}</b></span>
             </div>
             <div className={'sizes'}>
                 {product.sizes && (
