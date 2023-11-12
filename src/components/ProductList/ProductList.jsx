@@ -54,36 +54,49 @@ const ProductList = () => {
     };
   }, [onSendData]);
 
-  const onAdd = (product) => {
-    const alreadyAdded = addedItems.find((item) => item.id === product.id);
+    const onAdd = (product) => {
+      const alreadyAdded = addedItems.find((item) => item.id === product.id);
 
-    let newItems = [];
+      let newItems = [];
 
-    if (alreadyAdded) {
-      newItems = addedItems.map((item) => (item.id === product.id ? product : item));
-    } else {
-      newItems = [...addedItems, product];
-    }
+      if (alreadyAdded) {
+        newItems = addedItems.map((item) => (item.id === product.id ? product : item));
+      } else {
+        newItems = [...addedItems, product];
+      }
 
-    setAddedItems(newItems);
+      setAddedItems(newItems);
 
-    if (newItems.length === 0) {
-      tg.MainButton.hide();
-    } else {
-      tg.MainButton.show();
-      tg.MainButton.setParams({
-        text: `Купить ${getTotalPrice(newItems)}`,
-      });
-    }
+      if (newItems.length === 0) {
+        tg.MainButton.hide();
+      } else {
+        tg.MainButton.show();
+        tg.MainButton.setParams({
+          text: `Купить ${getTotalPrice(newItems)}`,
+        });
+      }
+    };
+
+    const onRemove = (productId) => {
+      const updatedItems = addedItems.filter((item) => item.id !== productId);
+      setAddedItems(updatedItems);
+
+      if (updatedItems.length === 0) {
+        tg.MainButton.hide();
+      } else {
+        tg.MainButton.setParams({
+          text: `Купить ${getTotalPrice(updatedItems)}`,
+        });
+      }
+    };
+
+    return (
+        <div className={'list'}>
+          {products.map((item) => (
+              <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'item'} />
+          ))}
+        </div>
+    );
   };
 
-  return (
-      <div className={'list'}>
-        {products.map((item) => (
-            <ProductItem key={item.id} product={item} onAdd={onAdd} className={'item'} />
-        ))}
-      </div>
-  );
-};
-
-export default ProductList;
+  export default ProductList;
