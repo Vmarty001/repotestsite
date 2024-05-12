@@ -3,12 +3,15 @@
     flex-direction: column;
     width: 100%;
     padding: 20px;
-    box-sizing: border-box; /* Добавлено свойство box-sizing для учета внешних отступов в общей ширине и высоте элемента */
 }
 
-.input, .select {
+.input {
     width: 100%;
     padding: 10px;
     margin-top: 15px;
-    box-sizing: border-box; /* Добавлено свойство box-sizing для учета внешних отступов в общей ширине и высоте элемента */
+}
+
+.select {
+    padding: 10px;
+    margin-top: 15px;
 }
