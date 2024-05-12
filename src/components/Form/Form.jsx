@@ -1,60 +1,54 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import './Form.css';
-import { useTelegram } from "../../hooks/useTelegram";
+import {useTelegram} from "../../hooks/useTelegram";
 
 const Form = () => {
-    const [city, setCity] = useState('');
-    const [sdekaddress, setSdek] = useState('');
-    const [phone, setPhone] = useState('');
+    const [country, setCountry] = useState('');
+    const [street, setStreet] = useState('');
     const [subject, setSubject] = useState('physical');
-    const { tg } = useTelegram();
+    const {tg} = useTelegram();
 
     const onSendData = useCallback(() => {
         const data = {
-            city,
-            sdekaddress,
-            subject,
-            phone, // Fixed typo here, changed setSubject to setPhone
-        };
+            country,
+            street,
+            subject
+        }
         tg.sendData(JSON.stringify(data));
-    }, [city, sdekaddress, subject, phone]);
+    }, [country, street, subject])
 
     useEffect(() => {
-        tg.onEvent('mainButtonClicked', onSendData);
+        tg.onEvent('mainButtonClicked', onSendData)
         return () => {
-            tg.offEvent('mainButtonClicked', onSendData);
-        };
-    }, [onSendData]);
+            tg.offEvent('mainButtonClicked', onSendData)
+        }
+    }, [onSendData])
 
     useEffect(() => {
         tg.MainButton.setParams({
             text: 'Отправить данные'
-        });
-    }, [tg.MainButton]);
+        })
+    }, [])
 
     useEffect(() => {
-        if (!city || !sdekaddress || !phone) {
+        if(!street || !country) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
         }
-    }, [city, sdekaddress, phone]);
+    }, [country, street])
 
-    const onChangeCity = (e) => {
-        setCity(e.target.value);
-    };
+    const onChangeCountry = (e) => {
+        setCountry(e.target.value)
+    }
 
-    const onChangeSdek = (e) => {
-        setSdek(e.target.value);
-    };
-
-    const onChangePhone = (e) => {
-        setPhone(e.target.value); // Fixed typo here, changed setSubject to setPhone
-    };
+    const onChangeStreet = (e) => {
+        setStreet(e.target.value)
+    }
 
     const onChangeSubject = (e) => {
-        setSubject(e.target.value);
-    };
+        setSubject(e.target.value)
+    }
 
     return (
         <div className={"form"}>
@@ -62,23 +56,16 @@ const Form = () => {
             <input
                 className={'input'}
                 type="text"
-                placeholder={'Город'}
-                value={city}
-                onChange={onChangeCity}
+                placeholder={'Страна'}
+                value={country}
+                onChange={onChangeCountry}
             />
             <input
                 className={'input'}
                 type="text"
-                placeholder={'Адрес пункта выдачи СДЭК. (Постмат нельзя) '}
-                value={sdekaddress}
-                onChange={onChangeSdek}
-            />
-            <input
-                className={'input'}
-                type="text"
-                placeholder={'Номер телефона'}
-                value={phone}
-                onChange={onChangePhone}
+                placeholder={'Улица'}
+                value={street}
+                onChange={onChangeStreet}
             />
             <select value={subject} onChange={onChangeSubject} className={'select'}>
                 <option value={'physical'}>Физ. лицо</option>
