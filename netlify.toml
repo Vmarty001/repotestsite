@@ -1,2 +1,10 @@
-/form    /index.html    200
-/*       /index.html    200
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+  from = "/form"
+  to = "/index.html"
+  status = 200
+
+
