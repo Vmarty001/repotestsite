@@ -14,7 +14,7 @@ const Form = () => {
             city,
             sdekaddress,
             subject,
-            phone, // Fixed typo here, changed setSubject to setPhone
+            phone,
         };
         tg.sendData(JSON.stringify(data));
     }, [city, sdekaddress, subject, phone]);
@@ -49,7 +49,7 @@ const Form = () => {
     };
 
     const onChangePhone = (e) => {
-        setPhone(e.target.value); // Fixed typo here, changed setSubject to setPhone
+        setPhone(e.target.value);
     };
 
     const onChangeSubject = (e) => {
@@ -57,34 +57,35 @@ const Form = () => {
     };
 
     return (
-        <div className={"form"}>
+        <form className="form">
+            <div>Форма загружена</div>
             <h3>Введите ваши данные</h3>
             <input
-                className={'input'}
+                className="inputField"
                 type="text"
-                placeholder={'Город'}
+                placeholder="Город"
                 value={city}
                 onChange={onChangeCity}
             />
             <input
-                className={'input'}
+                className="inputField"
                 type="text"
-                placeholder={'Адрес пункта выдачи СДЭК. (Постмат нельзя) '}
+                placeholder="Адрес пункта выдачи СДЭК. (Постмат нельзя) "
                 value={sdekaddress}
                 onChange={onChangeSdek}
             />
             <input
-                className={'input'}
+                className="inputField"
                 type="text"
-                placeholder={'Номер телефона'}
+                placeholder="Номер телефона"
                 value={phone}
                 onChange={onChangePhone}
             />
-            <select value={subject} onChange={onChangeSubject} className={'select'}>
-                <option value={'physical'}>Физ. лицо</option>
-                <option value={'legal'}>Юр. лицо</option>
+            <select value={subject} onChange={onChangeSubject} className="selectField">
+                <option value="physical">Физ. лицо</option>
+                <option value="legal">Юр. лицо</option>
             </select>
-        </div>
+        </form>
     );
 };
 

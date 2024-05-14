@@ -1,17 +1,26 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
     padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
 
-.input {
+.inputField {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     width: 100%;
-    padding: 10px;
-    margin-top: 15px;
 }
 
-.select {
-    padding: 10px;
-    margin-top: 15px;
+.selectField {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+div {
+    margin-bottom: 10px;
 }
