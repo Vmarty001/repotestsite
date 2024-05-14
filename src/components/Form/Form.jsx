@@ -7,6 +7,16 @@ const Form = () => {
     const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('physical');
 
+    const onSendData = () => {
+        const data = {
+            city,
+            sdekaddress,
+            subject,
+            phone,
+        };
+        console.log('Sending data:', data); // Вместо отправки данных в Telegram, печатаем их в консоль
+    };
+
     const onChangeCity = (e) => {
         setCity(e.target.value);
     };
@@ -24,8 +34,7 @@ const Form = () => {
     };
 
     return (
-        <form className="form">
-            <div>Форма загружена</div>
+        <div className="form">
             <h3>Введите ваши данные</h3>
             <input
                 className="inputField"
@@ -52,7 +61,8 @@ const Form = () => {
                 <option value="physical">Физ. лицо</option>
                 <option value="legal">Юр. лицо</option>
             </select>
-        </form>
+            <button onClick={onSendData}>Отправить данные</button> {/* Кнопка для отправки данных */}
+        </div>
     );
 };
 
