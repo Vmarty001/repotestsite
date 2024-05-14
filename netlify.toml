@@ -3,8 +3,5 @@
   to = "/index.html"
   status = 200
 
-  from = "/form"
-  to = "/index.html"
-  status = 200
 
 
