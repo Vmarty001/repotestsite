@@ -9,6 +9,53 @@ const Form = () => {
     const [subject, setSubject] = useState('physical');
     const { tg } = useTelegram();
 
+    const onSendData = useCallback(() => {
+        const data = {
+            city,
+            sdekaddress,
+            subject,
+            phone, // Fixed typo here, changed setSubject to setPhone
+        };
+        tg.sendData(JSON.stringify(data));
+    }, [city, sdekaddress, subject, phone]);
+
+    useEffect(() => {
+        tg.onEvent('mainButtonClicked', onSendData);
+        return () => {
+            tg.offEvent('mainButtonClicked', onSendData);
+        };
+    }, [onSendData]);
+
+    useEffect(() => {
+        tg.MainButton.setParams({
+            text: 'Отправить данные'
+        });
+    }, [tg.MainButton]);
+
+    useEffect(() => {
+        if (!city || !sdekaddress || !phone) {
+            tg.MainButton.hide();
+        } else {
+            tg.MainButton.show();
+        }
+    }, [city, sdekaddress, phone]);
+
+    const onChangeCity = (e) => {
+        setCity(e.target.value);
+    };
+
+    const onChangeSdek = (e) => {
+        setSdek(e.target.value);
+    };
+
+    const onChangePhone = (e) => {
+        setPhone(e.target.value); // Fixed typo here, changed setSubject to setPhone
+    };
+
+    const onChangeSubject = (e) => {
+        setSubject(e.target.value);
+    };
+
     return (
         <div className={"form"}>
             <h3>Введите ваши данные</h3>
