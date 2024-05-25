@@ -1,11 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useTelegram } from '../../hooks/useTelegram';
 import './Form.css';
+import { useTelegram } from "../../hooks/useTelegram";
 
 const Form = () => {
-    const location = useLocation();
-    const { selectedProducts } = location.state || { selectedProducts: [] };
     const [city, setCity] = useState('');
     const [sdekaddress, setSdek] = useState('');
     const [phone, setPhone] = useState('');
@@ -17,7 +14,7 @@ const Form = () => {
             city,
             sdekaddress,
             subject,
-            phone,
+            phone, // Fixed typo here, changed setSubject to setPhone
         };
         tg.sendData(JSON.stringify(data));
     }, [city, sdekaddress, subject, phone]);
@@ -52,7 +49,7 @@ const Form = () => {
     };
 
     const onChangePhone = (e) => {
-        setPhone(e.target.value);
+        setPhone(e.target.value); // Fixed typo here, changed setSubject to setPhone
     };
 
     const onChangeSubject = (e) => {
@@ -61,15 +58,6 @@ const Form = () => {
 
     return (
         <div className={"form"}>
-            <h3>Ваши выбранные товары</h3>
-            <ul>
-                {selectedProducts.map(product => (
-                    <li key={product.id}>
-                        <img src={product.img} alt={product.title} />
-                        <p>{product.title} - {product.price} руб.</p>
-                    </li>
-                ))}
-            </ul>
             <h3>Введите ваши данные</h3>
             <input
                 className={'input'}
@@ -101,4 +89,3 @@ const Form = () => {
 };
 
 export default Form;
-

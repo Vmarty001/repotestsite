@@ -23,77 +23,103 @@ const products = [
 ];
 
 const getTotalPrice = (items = []) => {
-  return items.reduce((acc, item) => acc + item.price, 0);
+  return items.reduce((acc, item) => {
+    return (acc += item.price);
+  }, 0);
 };
 
 const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState('Новое');
-  const { tg } = useTelegram();
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const { tg, queryId } = useTelegram();
 
-  useEffect(() => {
-    tg.onEvent('mainButtonClicked', handleMainButtonClick);
-    return () => {
-      tg.offEvent('mainButtonClicked', handleMainButtonClick);
+  const onSendData = useCallback(() => {
+    const data = {
+      products: addedItems,
+      totalPrice: getTotalPrice(addedItems),
+      queryId,
     };
-  }, []);
-
-  const handleMainButtonClick = useCallback(() => {
-    // Действие при нажатии на кнопку
-  }, []);
-
-  const handleAddToCart = (product) => {
-    const index = addedItems.findIndex((item) => item.id === product.id);
-    if (index !== -1) {
-      const newItems = [...addedItems];
-      newItems.splice(index, 1);
-      setAddedItems(newItems);
-    } else {
-      setAddedItems([...addedItems, product]);
-    }
-  };
+    fetch('http://45.89.188.162:8000/web-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  }, [addedItems, queryId]);
 
   useEffect(() => {
-    if (addedItems.length === 0) {
+    tg.onEvent('mainButtonClicked', onSendData);
+    return () => {
+      tg.offEvent('mainButtonClicked', onSendData);
+    };
+  }, [onSendData]);
+
+  const onAdd = (product) => {
+    const alreadyAdded = addedItems.find((item) => item.id === product.id);
+    let newItems = [];
+
+    if (alreadyAdded) {
+      newItems = addedItems.filter((item) => item.id !== product.id);
+    } else {
+      newItems = [...addedItems, product];
+    }
+
+    setAddedItems(newItems);
+
+    if (newItems.length === 0) {
       tg.MainButton.hide();
     } else {
-      const totalPrice = getTotalPrice(addedItems);
       tg.MainButton.show();
       tg.MainButton.setParams({
-        text: `Купить ${totalPrice}`
+        text: `Купить ${getTotalPrice(newItems)}`,
       });
     }
-  }, [addedItems, tg.MainButton]);
-
-  const handleCategoryChange = (category) => {
-    setActiveCategory(category);
   };
 
-  const filteredProducts = activeCategory === 'Новое' ? products : products.filter(product => product.category === activeCategory);
+  const onRemove = (productId) => {
+    const updatedItems = addedItems.filter((item) => item.id !== productId);
+    setAddedItems(updatedItems);
+
+    if (updatedItems.length === 0) {
+      tg.MainButton.hide();
+    } else {
+      tg.MainButton.setParams({
+        text: `Купить ${getTotalPrice(updatedItems)}`,
+      });
+    }
+  };
+
+  useEffect(() => {
+    // Фильтруем товары по категории
+    let filtered = [];
+    if (activeCategory === 'Новое') {
+      // Возвращаем все товары, независимо от категории
+      filtered = products.slice().sort((a, b) => b.id - a.id);
+    } else {
+      // Возвращаем товары только выбранной категории
+      filtered = products.filter((product) => product.category === activeCategory);
+    }
+    setFilteredProducts(filtered);
+  }, [activeCategory]);
 
   return (
-      <div className="product-list">
-        <div className="categories">
-          {['Новое', 'Кроссовки', 'Одежда'].map((category) => (
-              <button
-                  key={category}
-                  onClick={() => handleCategoryChange(category)}
-                  className={activeCategory === category ? 'active' : ''}
-              >
-                {category}
-              </button>
-          ))}
+      <div className={'product-list'}>
+        <div className={'categories'}>
+          <button onClick={() => setActiveCategory('Новое')} className={activeCategory === 'Новое' ? 'active' : ''}>
+            Новое
+          </button>
+          <button onClick={() => setActiveCategory('Кроссовки')} className={activeCategory === 'Кроссовки' ? 'active' : ''}>
+            Кроссовки
+          </button>
+          <button onClick={() => setActiveCategory('Одежда')} className={activeCategory === 'Одежда' ? 'active' : ''}>
+            Одежда
+          </button>
         </div>
-        <div className="product-list-items">
-          {filteredProducts.map((product) => (
-              <ProductItem
-                  key={product.id}
-                  product={product}
-                  onAdd={handleAddToCart}
-                  onRemove={handleRemoveFromCart} // Добавляем обработчик удаления
-                  inCart={addedItems.some(item => item.id === product.id)}
-                  className="product-item"
-              />
+        <div className={'product-list-items'}>
+          {filteredProducts.map((item) => (
+              <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'product-item'} />
           ))}
         </div>
       </div>
