@@ -90,6 +90,7 @@ const ProductList = () => {
                   key={product.id}
                   product={product}
                   onAdd={handleAddToCart}
+                  onRemove={handleRemoveFromCart} // Добавляем обработчик удаления
                   inCart={addedItems.some(item => item.id === product.id)}
                   className="product-item"
               />
