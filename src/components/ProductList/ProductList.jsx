@@ -32,15 +32,22 @@ const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState('Новое');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const { tg } = useTelegram();
-  const history = useHistory();
+  const { tg, queryId } = useTelegram();
 
   const onSendData = useCallback(() => {
-    history.push({
-      pathname: '/form',
-      state: { selectedProducts: addedItems }
+    const data = {
+      products: addedItems,
+      totalPrice: getTotalPrice(addedItems),
+      queryId,
+    };
+    fetch('http://45.89.188.162:8000/web-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     });
-  }, [addedItems, history]);
+  }, [addedItems, queryId]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData);
@@ -85,10 +92,13 @@ const ProductList = () => {
   };
 
   useEffect(() => {
+    // Фильтруем товары по категории
     let filtered = [];
     if (activeCategory === 'Новое') {
+      // Возвращаем все товары, независимо от категории
       filtered = products.slice().sort((a, b) => b.id - a.id);
     } else {
+      // Возвращаем товары только выбранной категории
       filtered = products.filter((product) => product.category === activeCategory);
     }
     setFilteredProducts(filtered);
