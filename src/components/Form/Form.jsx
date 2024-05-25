@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './Form.css';
 import { useTelegram } from "../../hooks/useTelegram";
-import { useLocation } from 'react-router-dom'; // добавьте это
+import { useLocation } from 'react-router-dom';
 
 const Form = () => {
     const [city, setCity] = useState('');
@@ -9,8 +9,8 @@ const Form = () => {
     const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('physical');
     const { tg } = useTelegram();
-    const location = useLocation(); // добавьте это
-    const { addedItems } = location.state || { addedItems: [] }; // добавьте это
+    const location = useLocation();
+    const { addedItems } = location.state || { addedItems: [] };
 
     const onSendData = useCallback(() => {
         const data = {
