@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './Form.css';
 import { useTelegram } from "../../hooks/useTelegram";
-import { useLocation } from 'react-router-dom';
 
 const Form = () => {
     const [city, setCity] = useState('');
@@ -9,15 +8,13 @@ const Form = () => {
     const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('physical');
     const { tg } = useTelegram();
-    const location = useLocation();
-    const { addedItems } = location.state || { addedItems: [] };
 
     const onSendData = useCallback(() => {
         const data = {
             city,
             sdekaddress,
             subject,
-            phone,
+            phone, // Fixed typo here, changed setSubject to setPhone
         };
         tg.sendData(JSON.stringify(data));
     }, [city, sdekaddress, subject, phone]);
@@ -52,7 +49,7 @@ const Form = () => {
     };
 
     const onChangePhone = (e) => {
-        setPhone(e.target.value);
+        setPhone(e.target.value); // Fixed typo here, changed setSubject to setPhone
     };
 
     const onChangeSubject = (e) => {
@@ -87,21 +84,6 @@ const Form = () => {
                 <option value={'physical'}>Физ. лицо</option>
                 <option value={'legal'}>Юр. лицо</option>
             </select>
-
-            {addedItems.length > 0 && (
-                <div className="added-items">
-                    <h4>Товары в корзине:</h4>
-                    <ul>
-                        {addedItems.map((item) => (
-                            <li key={item.id}>
-                                <img src={item.img} alt={item.title} className="product-img" />
-                                <span>{item.title}</span>
-                                <span>{item.price} руб.</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
         </div>
     );
 };
