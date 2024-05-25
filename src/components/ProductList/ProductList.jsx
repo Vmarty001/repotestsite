@@ -30,7 +30,6 @@ const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState('Новое');
   const { tg } = useTelegram();
-  const history = useHistory();
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', handleMainButtonClick);
@@ -40,11 +39,8 @@ const ProductList = () => {
   }, []);
 
   const handleMainButtonClick = useCallback(() => {
-    history.push({
-      pathname: '/form',
-      state: { selectedProducts: addedItems }
-    });
-  }, [addedItems, history]);
+    // Действие при нажатии на кнопку
+  }, []);
 
   const handleAddToCart = (product) => {
     const index = addedItems.findIndex((item) => item.id === product.id);
