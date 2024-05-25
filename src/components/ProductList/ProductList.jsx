@@ -23,31 +23,22 @@ const products = [
 ];
 
 const getTotalPrice = (items = []) => {
-  return items.reduce((acc, item) => {
-    return (acc += item.price);
-  }, 0);
+  return items.reduce((acc, item) => acc + item.price, 0);
 };
 
 const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState('Новое');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const { tg, queryId } = useTelegram();
+  const { tg } = useTelegram();
+  const history = useHistory();
 
   const onSendData = useCallback(() => {
-    const data = {
-      products: addedItems,
-      totalPrice: getTotalPrice(addedItems),
-      queryId,
-    };
-    fetch('http://45.89.188.162:8000/web-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    history.push({
+      pathname: '/form',
+      state: { selectedProducts: addedItems }
     });
-  }, [addedItems, queryId]);
+  }, [addedItems, history]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData);
@@ -73,7 +64,7 @@ const ProductList = () => {
     } else {
       tg.MainButton.show();
       tg.MainButton.setParams({
-        text: `Купить ${getTotalPrice(newItems)}`,
+        text: `Купить ${getTotalPrice(newItems)}`
       });
     }
   };
@@ -86,19 +77,16 @@ const ProductList = () => {
       tg.MainButton.hide();
     } else {
       tg.MainButton.setParams({
-        text: `Купить ${getTotalPrice(updatedItems)}`,
+        text: `Купить ${getTotalPrice(updatedItems)}`
       });
     }
   };
 
   useEffect(() => {
-    // Фильтруем товары по категории
     let filtered = [];
     if (activeCategory === 'Новое') {
-      // Возвращаем все товары, независимо от категории
       filtered = products.slice().sort((a, b) => b.id - a.id);
     } else {
-      // Возвращаем товары только выбранной категории
       filtered = products.filter((product) => product.category === activeCategory);
     }
     setFilteredProducts(filtered);
