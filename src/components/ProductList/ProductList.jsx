@@ -22,6 +22,7 @@ const products = [
   { id: '8', title: 'Название 5', prices: { '41': 12000, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike8, sizes: ['41', '42', '43'], category: 'Одежда' },
 ];
 
+
 const getTotalPrice = (items = []) => {
   return items.reduce((acc, item) => {
     return (acc += item.price);
@@ -32,22 +33,15 @@ const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState('Новое');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const { tg, queryId } = useTelegram();
+  const { tg } = useTelegram();
+  const history = useHistory();
 
   const onSendData = useCallback(() => {
-    const data = {
-      products: addedItems,
-      totalPrice: getTotalPrice(addedItems),
-      queryId,
-    };
-    fetch('http://192.168.0.79/web-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+    history.push({
+      pathname: '/form',
+      state: { selectedProducts: addedItems }
     });
-  }, [addedItems, queryId]);
+  }, [addedItems, history]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData);
@@ -92,13 +86,10 @@ const ProductList = () => {
   };
 
   useEffect(() => {
-    // Фильтруем товары по категории
     let filtered = [];
     if (activeCategory === 'Новое') {
-      // Возвращаем все товары, независимо от категории
       filtered = products.slice().sort((a, b) => b.id - a.id);
     } else {
-      // Возвращаем товары только выбранной категории
       filtered = products.filter((product) => product.category === activeCategory);
     }
     setFilteredProducts(filtered);

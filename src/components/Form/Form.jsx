@@ -2,19 +2,21 @@ import React, { useCallback, useEffect, useState } from 'react';
 import './Form.css';
 import { useTelegram } from "../../hooks/useTelegram";
 
-const Form = () => {
+const Form = ({ location }) => {
     const [city, setCity] = useState('');
     const [sdekaddress, setSdek] = useState('');
     const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('physical');
     const { tg } = useTelegram();
 
+    const selectedProducts = location.state?.selectedProducts || [];
+
     const onSendData = useCallback(() => {
         const data = {
             city,
             sdekaddress,
             subject,
-            phone, // Fixed typo here, changed setSubject to setPhone
+            phone,
         };
         tg.sendData(JSON.stringify(data));
     }, [city, sdekaddress, subject, phone]);
@@ -49,7 +51,7 @@ const Form = () => {
     };
 
     const onChangePhone = (e) => {
-        setPhone(e.target.value); // Fixed typo here, changed setSubject to setPhone
+        setPhone(e.target.value);
     };
 
     const onChangeSubject = (e) => {
@@ -58,6 +60,15 @@ const Form = () => {
 
     return (
         <div className={"form"}>
+            <h3>Ваши выбранные товары</h3>
+            <ul>
+                {selectedProducts.map(product => (
+                    <li key={product.id}>
+                        <img src={product.img} alt={product.title} />
+                        <p>{product.title} - {product.price} руб.</p>
+                    </li>
+                ))}
+            </ul>
             <h3>Введите ваши данные</h3>
             <input
                 className={'input'}
