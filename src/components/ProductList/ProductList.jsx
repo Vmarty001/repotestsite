@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
-import { useHistory } from 'react-router-dom';
 import Nike from './images/pinknike.jpg';
 import Nike1 from './images/2023-11-10 23.55.38.jpg';
 import Nike3 from './images/2023-11-10 23.55.33.jpg';
@@ -30,85 +29,74 @@ const getTotalPrice = (items = []) => {
 const ProductList = () => {
   const [addedItems, setAddedItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState('Новое');
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const { tg } = useTelegram();
   const history = useHistory();
 
-  const onSendData = useCallback(() => {
+  useEffect(() => {
+    tg.onEvent('mainButtonClicked', handleMainButtonClick);
+    return () => {
+      tg.offEvent('mainButtonClicked', handleMainButtonClick);
+    };
+  }, []);
+
+  const handleMainButtonClick = useCallback(() => {
     history.push({
       pathname: '/form',
       state: { selectedProducts: addedItems }
     });
   }, [addedItems, history]);
 
-  useEffect(() => {
-    tg.onEvent('mainButtonClicked', onSendData);
-    return () => {
-      tg.offEvent('mainButtonClicked', onSendData);
-    };
-  }, [onSendData]);
-
-  const onAdd = (product) => {
-    const alreadyAdded = addedItems.find((item) => item.id === product.id);
-    let newItems = [];
-
-    if (alreadyAdded) {
-      newItems = addedItems.filter((item) => item.id !== product.id);
+  const handleAddToCart = (product) => {
+    const index = addedItems.findIndex((item) => item.id === product.id);
+    if (index !== -1) {
+      const newItems = [...addedItems];
+      newItems.splice(index, 1);
+      setAddedItems(newItems);
     } else {
-      newItems = [...addedItems, product];
+      setAddedItems([...addedItems, product]);
     }
+  };
 
-    setAddedItems(newItems);
-
-    if (newItems.length === 0) {
+  useEffect(() => {
+    if (addedItems.length === 0) {
       tg.MainButton.hide();
     } else {
+      const totalPrice = getTotalPrice(addedItems);
       tg.MainButton.show();
       tg.MainButton.setParams({
-        text: `Купить ${getTotalPrice(newItems)}`
+        text: `Купить ${totalPrice}`
       });
     }
+  }, [addedItems, tg.MainButton]);
+
+  const handleCategoryChange = (category) => {
+    setActiveCategory(category);
   };
 
-  const onRemove = (productId) => {
-    const updatedItems = addedItems.filter((item) => item.id !== productId);
-    setAddedItems(updatedItems);
-
-    if (updatedItems.length === 0) {
-      tg.MainButton.hide();
-    } else {
-      tg.MainButton.setParams({
-        text: `Купить ${getTotalPrice(updatedItems)}`
-      });
-    }
-  };
-
-  useEffect(() => {
-    let filtered = [];
-    if (activeCategory === 'Новое') {
-      filtered = products.slice().sort((a, b) => b.id - a.id);
-    } else {
-      filtered = products.filter((product) => product.category === activeCategory);
-    }
-    setFilteredProducts(filtered);
-  }, [activeCategory]);
+  const filteredProducts = activeCategory === 'Новое' ? products : products.filter(product => product.category === activeCategory);
 
   return (
-      <div className={'product-list'}>
-        <div className={'categories'}>
-          <button onClick={() => setActiveCategory('Новое')} className={activeCategory === 'Новое' ? 'active' : ''}>
-            Новое
-          </button>
-          <button onClick={() => setActiveCategory('Кроссовки')} className={activeCategory === 'Кроссовки' ? 'active' : ''}>
-            Кроссовки
-          </button>
-          <button onClick={() => setActiveCategory('Одежда')} className={activeCategory === 'Одежда' ? 'active' : ''}>
-            Одежда
-          </button>
+      <div className="product-list">
+        <div className="categories">
+          {['Новое', 'Кроссовки', 'Одежда'].map((category) => (
+              <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={activeCategory === category ? 'active' : ''}
+              >
+                {category}
+              </button>
+          ))}
         </div>
-        <div className={'product-list-items'}>
-          {filteredProducts.map((item) => (
-              <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'product-item'} />
+        <div className="product-list-items">
+          {filteredProducts.map((product) => (
+              <ProductItem
+                  key={product.id}
+                  product={product}
+                  onAdd={handleAddToCart}
+                  inCart={addedItems.some(item => item.id === product.id)}
+                  className="product-item"
+              />
           ))}
         </div>
       </div>
