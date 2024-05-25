@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
+import { useHistory } from 'react-router-dom'; // добавьте это
 import Nike from './images/pinknike.jpg';
 import Nike1 from './images/2023-11-10 23.55.38.jpg';
 import Nike3 from './images/2023-11-10 23.55.33.jpg';
@@ -33,6 +34,7 @@ const ProductList = () => {
   const [activeCategory, setActiveCategory] = useState('Новое');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const { tg, queryId } = useTelegram();
+  const history = useHistory(); // добавьте это
 
   const onSendData = useCallback(() => {
     const data = {
@@ -46,8 +48,13 @@ const ProductList = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
+    }).then(() => {
+      history.push({
+        pathname: '/form',
+        state: { addedItems }
+      });
     });
-  }, [addedItems, queryId]);
+  }, [addedItems, queryId, history]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData);
