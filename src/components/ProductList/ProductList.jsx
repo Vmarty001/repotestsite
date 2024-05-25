@@ -22,7 +22,6 @@ const products = [
   { id: '8', title: 'Название 5', prices: { '41': 12000, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike8, sizes: ['41', '42', '43'], category: 'Одежда' },
 ];
 
-
 const getTotalPrice = (items = []) => {
   return items.reduce((acc, item) => {
     return (acc += item.price);
