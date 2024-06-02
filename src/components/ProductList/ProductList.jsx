@@ -11,16 +11,17 @@ import Nike5 from './images/2023-11-10 23.55.27.jpg';
 import Nike6 from './images/2023-11-10 23.55.19.jpg';
 import Nike7 from './images/2023-11-10 23.55.15.jpg';
 import Nike8 from './images/2023-11-10 23.55.10.jpg';
+import ballenciaga from 'https://images.51microshop.com/713/product/20180725/copy_of_Balenciaga_BB_logo_T_shirts_1532528558481_4.jpg';
 
 const products = [
-  { id: '1', title: 'Название1', prices: { '41': 1, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike, sizes: ['41', '42', '43'], category: 'Новое' },
-  { id: '2', title: 'Название1', prices: { '41': 1, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike1, sizes: ['41', '42', '43'], category: 'Кроссовки' },
-  { id: '3', title: 'Название 22', prices: { '41': 1, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike3, sizes: ['41', '42', '43'], category: 'Новое' },
-  { id: '4', title: 'Название 8', prices: { '41': 1, '42': 133, '43': 144 }, description: 'Зеленого цвета, теплая', img: Nike4, sizes: ['41', '42', '43'], category: 'Одежда' },
-  { id: '5', title: 'Название 3', prices: { '41': 1, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike5, sizes: ['41', '42', '43'], category: 'Одежда' },
-  { id: '6', title: 'Название 7', prices: { '41': 1, '42': 700, '43': 800 }, description: 'Зеленого цвета, теплая', img: Nike6, sizes: ['41', '42', '43'], category: 'Кроссовки' },
-  { id: '7', title: 'Название 4', prices: { '41': 1, '42': 6500, '43': 7500 }, description: 'Синего цвета, прямые', img: Nike7, sizes: ['41', '42', '43'], category: 'Новое' },
-  { id: '8', title: 'Название 5', prices: { '41': 1, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike8, sizes: ['41', '42', '43'], category: 'Одежда' },
+  { id: '1', title: 'Nike Air Max', prices: { '41': 1500, '42': 6000, '43': 7000 }, description: 'Мягкая подошва', img: Nike, sizes: ['41', '42', '43'], category: 'Новое' },
+  { id: '2', title: 'Nike Exclusive', prices: { '41': 1212, '42': 13000, '43': 14000 }, description: 'Супер коллекция', img: ballenciaga, sizes: ['41', '42', '43'], category: 'Кроссовки' },
+  { id: '3', title: 'Футболка Balenciaga', prices: { 'S': 12312, 'M': 6000, 'L': 7000,'XL': 7000 }, description: 'Самое популярное', img: Nike3, sizes: ['S', 'M', 'L','XL'], category: 'Новое' },
+  { id: '4', title: 'Свитшот OffWhite', prices: { 'S': 5551, 'M': 133, 'XL': 144 }, description: 'Демисезон', img: Nike4, sizes: ['S', 'M', 'XL'], category: 'Одежда' },
+  { id: '5', title: 'Трусы CK', prices: { 'XS': 1321, 'S': 6000, 'L': 7000 }, description: 'Мужские. Новая коллекция', img: Nike5, sizes: ['XS', 'S', 'L'], category: 'Одежда' },
+  { id: '6', title: 'Nike Dunk', prices: { '41': 1555, '42': 700, '43': 800 }, description: 'Эксклюзив. Импортные.', img: Nike6, sizes: ['41', '42', '43'], category: 'Кроссовки' },
+  { id: '7', title: 'Цепь', prices: { '6,35': 1943, '8,25': 6500, '9,5': 7500 }, description: 'Золото, мужская', img: Nike7, sizes: ['6,35', '8,25', '9,5'], category: 'Новое' },
+  { id: '8', title: 'Джинсы Collab', prices: { 'M': 12, 'L': 13000}, description: 'Синего цвета, зауженные', img: Nike8, sizes: ['M', 'L'], category: 'Одежда' },
 ];
 
 const getTotalPrice = (items = []) => {
