@@ -120,9 +120,11 @@ const ProductList = () => {
               <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'product-item'} />
           ))}
         </div>
-        <Link to="/form" state={{ addedItems }}>
-          <button className="checkout-button">Перейти к оформлению</button>
-        </Link>
+        {addedItems.length > 0 && (
+            <Link to={{ pathname: '/form', state: { addedItems } }}> {/* Передача списка добавленных товаров через параметры запроса */}
+              <button className="checkout-button">Перейти к оформлению</button>
+            </Link>
+        )}
       </div>
   );
 };
