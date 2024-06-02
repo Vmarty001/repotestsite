@@ -40,14 +40,8 @@ const ProductList = () => {
       totalPrice: getTotalPrice(addedItems),
       queryId,
     };
-    fetch('http://45.89.188.162:8000/web-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-  }, [addedItems, queryId]);
+    tg.sendData(JSON.stringify(data));
+  }, [city, sdekaddress, subject, phone]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData);
