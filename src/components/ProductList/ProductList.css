@@ -34,3 +34,21 @@
 .product-item {
     margin: 10px;
 }
+.checkout-button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.checkout-button:hover {
+    background-color: #333;
+}
