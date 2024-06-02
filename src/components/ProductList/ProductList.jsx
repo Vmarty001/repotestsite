@@ -72,7 +72,7 @@ const ProductList = () => {
     if (newItems.length === 0) {
       tg.MainButton.hide();
     } else {
-      tg.MainButton.show();
+    //  tg.MainButton.show();
       tg.MainButton.setParams({
         text: `Купить ${getTotalPrice(newItems)}`,
       });
@@ -122,7 +122,7 @@ const ProductList = () => {
         </div>
         {addedItems.length > 0 && (
             <Link to='/form' state={{ addedItems }}> {/* Передача списка добавленных товаров через параметры запроса */}
-              <button className="checkout-button"> Купить ${getTotalPrice(updatedItems)}</button>
+              <button className="checkout-button">Перейти к оформлению</button>
             </Link>
         )}
       </div>
