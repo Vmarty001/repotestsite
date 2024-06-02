@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import './Form.css';
 import { useTelegram } from "../../hooks/useTelegram";
 
-const Form = ({ cart }) => {
+const Form = ({ addedItems }) => {
     const [city, setCity] = useState('');
     const [sdekaddress, setSdek] = useState('');
     const [phone, setPhone] = useState('');
@@ -15,17 +15,17 @@ const Form = ({ cart }) => {
             sdekaddress,
             subject,
             phone,
-            cart
+            items: addedItems // Добавляем товары в данные, которые будут отправлены
         };
         tg.sendData(JSON.stringify(data));
-    }, [city, sdekaddress, subject, phone, cart]);
+    }, [city, sdekaddress, subject, phone, addedItems, tg]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
         return () => {
             tg.offEvent('mainButtonClicked', onSendData);
         };
-    }, [onSendData]);
+    }, [tg, onSendData]);
 
     useEffect(() => {
         tg.MainButton.setParams({
@@ -39,7 +39,7 @@ const Form = ({ cart }) => {
         } else {
             tg.MainButton.show();
         }
-    }, [city, sdekaddress, phone]);
+    }, [city, sdekaddress, phone, tg.MainButton]);
 
     const onChangeCity = (e) => {
         setCity(e.target.value);
@@ -85,15 +85,18 @@ const Form = ({ cart }) => {
                 <option value={'physical'}>Физ. лицо</option>
                 <option value={'legal'}>Юр. лицо</option>
             </select>
-
-            <h3>Товары в корзине</h3>
-            <ul>
-                {cart.map(item => (
-                    <li key={item.id}>
-                        {item.title} - {item.selectedSize} - {item.price} руб.
-                    </li>
-                ))}
-            </ul>
+            <div className={'cart-items'}>
+                <h4>Товары в корзине</h4>
+                {addedItems.length === 0 ? (
+                    <p>Корзина пуста</p>
+                ) : (
+                    <ul>
+                        {addedItems.map(item => (
+                            <li key={item.id}>{item.title} - {item.selectedSize} - {item.price} руб.</li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
     );
 };
