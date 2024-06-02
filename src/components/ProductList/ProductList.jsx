@@ -41,7 +41,7 @@ const ProductList = () => {
       queryId,
     };
     tg.sendData(JSON.stringify(data));
-  }, [city, sdekaddress, subject, phone]);
+  }, [products, totalPrice, queryId]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData);
