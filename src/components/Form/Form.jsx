@@ -18,10 +18,16 @@ const Form = () => {
             sdekaddress,
             subject,
             phone,
-            addedItems,
+            addedItems: addedItems.map(item => ({
+                id: item.id,
+                title: item.title,
+                description: item.description,
+                selectedSize: item.selectedSize,
+                price: item.price,
+            })),
         };
         tg.sendData(JSON.stringify(data));
-    }, [city, sdekaddress, subject, phone, addedItems]);
+    }, [city, sdekaddress, subject, phone, addedItems,item.title]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -59,6 +65,7 @@ const Form = () => {
     const onChangeSubject = (e) => {
         setSubject(e.target.value);
     };
+
 
     return (
         <div className="form">
