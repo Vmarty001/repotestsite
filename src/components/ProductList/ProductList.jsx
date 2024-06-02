@@ -2,9 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import Form from '../Form/Form';
-
 import Nike from './images/pinknike.jpg';
 import Nike1 from './images/2023-11-10 23.55.38.jpg';
 import Nike3 from './images/2023-11-10 23.55.33.jpg';
@@ -95,42 +92,37 @@ const ProductList = () => {
   };
 
   useEffect(() => {
+    // Фильтруем товары по категории
     let filtered = [];
     if (activeCategory === 'Новое') {
+      // Возвращаем все товары, независимо от категории
       filtered = products.slice().sort((a, b) => b.id - a.id);
     } else {
+      // Возвращаем товары только выбранной категории
       filtered = products.filter((product) => product.category === activeCategory);
     }
     setFilteredProducts(filtered);
   }, [activeCategory]);
 
   return (
-      <Router>
-        <div className={'product-list'}>
-          <div className={'categories'}>
-            <button onClick={() => setActiveCategory('Новое')} className={activeCategory === 'Новое' ? 'active' : ''}>
-              Новое
-            </button>
-            <button onClick={() => setActiveCategory('Кроссовки')} className={activeCategory === 'Кроссовки' ? 'active' : ''}>
-              Кроссовки
-            </button>
-            <button onClick={() => setActiveCategory('Одежда')} className={activeCategory === 'Одежда' ? 'active' : ''}>
-              Одежда
-            </button>
-          </div>
-          <div className={'product-list-items'}>
-            {filteredProducts.map((item) => (
-                <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'product-item'} />
-            ))}
-          </div>
-          <Link to="/form" className="form-link">Перейти к форме</Link>
+      <div className={'product-list'}>
+        <div className={'categories'}>
+          <button onClick={() => setActiveCategory('Новое')} className={activeCategory === 'Новое' ? 'active' : ''}>
+            Новое
+          </button>
+          <button onClick={() => setActiveCategory('Кроссовки')} className={activeCategory === 'Кроссовки' ? 'active' : ''}>
+            Кроссовки
+          </button>
+          <button onClick={() => setActiveCategory('Одежда')} className={activeCategory === 'Одежда' ? 'active' : ''}>
+            Одежда
+          </button>
         </div>
-        <Switch>
-          <Route path="/form">
-            <Form cart={addedItems} />
-          </Route>
-        </Switch>
-      </Router>
+        <div className={'product-list-items'}>
+          {filteredProducts.map((item) => (
+              <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'product-item'} />
+          ))}
+        </div>
+      </div>
   );
 };
 
