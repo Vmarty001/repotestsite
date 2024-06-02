@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
-import Form from '../Form/Form'; // Импортируем Form
+import { Link } from 'react-router-dom'; // Импорт Link для маршрутизации
 import Nike from './images/pinknike.jpg';
 import Nike1 from './images/2023-11-10 23.55.38.jpg';
 import Nike3 from './images/2023-11-10 23.55.33.jpg';
@@ -120,7 +120,9 @@ const ProductList = () => {
               <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'product-item'} />
           ))}
         </div>
-        <Form addedItems={addedItems} /> {/* Передаем addedItems в Form */}
+        <Link to="/form" state={{ addedItems }}>
+          <button className="checkout-button">Перейти к оформлению</button>
+        </Link>
       </div>
   );
 };

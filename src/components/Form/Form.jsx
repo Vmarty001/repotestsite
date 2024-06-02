@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './Form.css';
 import { useTelegram } from "../../hooks/useTelegram";
+import { useLocation } from 'react-router-dom'; // Импорт useLocation для получения состояния
 
-const Form = ({ addedItems }) => {
+const Form = () => {
     const [city, setCity] = useState('');
     const [sdekaddress, setSdek] = useState('');
     const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('physical');
     const { tg } = useTelegram();
+    const location = useLocation(); // Получение состояния из location
+    const { addedItems } = location.state || { addedItems: [] }; // Извлечение addedItems из состояния
 
     const onSendData = useCallback(() => {
         const data = {
@@ -15,17 +18,17 @@ const Form = ({ addedItems }) => {
             sdekaddress,
             subject,
             phone,
-            items: addedItems // Добавляем товары в данные, которые будут отправлены
+            addedItems, // Добавление списка товаров к данным формы
         };
         tg.sendData(JSON.stringify(data));
-    }, [city, sdekaddress, subject, phone, addedItems, tg]);
+    }, [city, sdekaddress, subject, phone, addedItems]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
         return () => {
             tg.offEvent('mainButtonClicked', onSendData);
         };
-    }, [tg, onSendData]);
+    }, [onSendData]);
 
     useEffect(() => {
         tg.MainButton.setParams({
@@ -39,7 +42,7 @@ const Form = ({ addedItems }) => {
         } else {
             tg.MainButton.show();
         }
-    }, [city, sdekaddress, phone, tg.MainButton]);
+    }, [city, sdekaddress, phone]);
 
     const onChangeCity = (e) => {
         setCity(e.target.value);
@@ -70,14 +73,14 @@ const Form = ({ addedItems }) => {
             <input
                 className={'input'}
                 type="text"
-                placeholder={'Адрес пункта выдачи СДЭК. (Постмат нельзя) '}
+                placeholder={'Адрес'}
                 value={sdekaddress}
                 onChange={onChangeSdek}
             />
             <input
                 className={'input'}
                 type="text"
-                placeholder={'Номер телефона'}
+                placeholder={'Телефон'}
                 value={phone}
                 onChange={onChangePhone}
             />
@@ -85,18 +88,6 @@ const Form = ({ addedItems }) => {
                 <option value={'physical'}>Физ. лицо</option>
                 <option value={'legal'}>Юр. лицо</option>
             </select>
-            <div className={'cart-items'}>
-                <h4>Товары в корзине</h4>
-                {addedItems.length === 0 ? (
-                    <p>Корзина пуста</p>
-                ) : (
-                    <ul>
-                        {addedItems.map(item => (
-                            <li key={item.id}>{item.title} - {item.selectedSize} - {item.price} руб.</li>
-                        ))}
-                    </ul>
-                )}
-            </div>
         </div>
     );
 };
