@@ -8,13 +8,10 @@ const Form = () => {
     const [sdekaddress, setSdek] = useState('');
     const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('physical');
-    const [phoneError, setPhoneError] = useState('');
+    const [phoneError, setPhoneError] = useState(false);
     const { tg } = useTelegram();
     const location = useLocation();
     const { addedItems } = location.state || { addedItems: [] };
-
-    const validateCity = (value) => /^[a-zA-Zа-яА-Я\s]+$/.test(value);
-    const validatePhone = (value) => /^\+7\d{10}$/.test(value);
 
     const onSendData = useCallback(() => {
         const data = {
@@ -56,7 +53,7 @@ const Form = () => {
 
     const onChangeCity = (e) => {
         const value = e.target.value;
-        if (validateCity(value)) {
+        if (/^[a-zA-Zа-яА-Я\s]*$/.test(value)) {
             setCity(value);
         }
     };
@@ -67,17 +64,36 @@ const Form = () => {
 
     const onChangePhone = (e) => {
         const value = e.target.value;
-        if (validatePhone(value)) {
-            setPhoneError('');
-        } else {
-            setPhoneError('Неправильный номер.');
-        }
         setPhone(value);
+        setPhoneError(!(value.startsWith('+7') && value.length === 12));
     };
 
     const onChangeSubject = (e) => {
         setSubject(e.target.value);
     };
+
+    // Функция прокрутки страницы вниз
+    const scrollToBottom = () => {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        // Добавляем обработчики событий
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', scrollToBottom);
+        });
+
+        window.addEventListener('resize', scrollToBottom);
+
+        // Убираем обработчики событий при размонтировании компонента
+        return () => {
+            inputs.forEach(input => {
+                input.removeEventListener('focus', scrollToBottom);
+            });
+            window.removeEventListener('resize', scrollToBottom);
+        };
+    }, []);
 
     return (
         <div className="form">
@@ -116,13 +132,13 @@ const Form = () => {
                 onChange={onChangeSdek}
             />
             <input
-                className={`input ${phoneError ? 'input-error' : ''}`}
+                className="input"
                 type="text"
                 placeholder="Телефон"
                 value={phone}
                 onChange={onChangePhone}
             />
-            {phoneError && <div className="error">{phoneError}</div>}
+            {phoneError && <div className="error">Неправильный номер.</div>}
             <select value={subject} onChange={onChangeSubject} className="select">
                 <option value="physical">Физ. лицо</option>
                 <option value="legal">Юр. лицо</option>
