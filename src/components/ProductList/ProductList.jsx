@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
+import Form from '../Form/Form'; // Импортируем Form
 import Nike from './images/pinknike.jpg';
 import Nike1 from './images/2023-11-10 23.55.38.jpg';
 import Nike3 from './images/2023-11-10 23.55.33.jpg';
@@ -12,14 +13,7 @@ import Nike7 from './images/2023-11-10 23.55.15.jpg';
 import Nike8 from './images/2023-11-10 23.55.10.jpg';
 
 const products = [
-  { id: '1', title: 'Название1', prices: { '41': 5000, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike, sizes: ['41', '42', '43'], category: 'Новое' },
-  { id: '2', title: 'Название1', prices: { '41': 12000, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike1, sizes: ['41', '42', '43'], category: 'Кроссовки' },
-  { id: '3', title: 'Название 22', prices: { '41': 5000, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike3, sizes: ['41', '42', '43'], category: 'Новое' },
-  { id: '4', title: 'Название 8', prices: { '41': 122, '42': 133, '43': 144 }, description: 'Зеленого цвета, теплая', img: Nike4, sizes: ['41', '42', '43'], category: 'Одежда' },
-  { id: '5', title: 'Название 3', prices: { '41': 5000, '42': 6000, '43': 7000 }, description: 'Синего цвета, прямые', img: Nike5, sizes: ['41', '42', '43'], category: 'Одежда' },
-  { id: '6', title: 'Название 7', prices: { '41': 600, '42': 700, '43': 800 }, description: 'Зеленого цвета, теплая', img: Nike6, sizes: ['41', '42', '43'], category: 'Кроссовки' },
-  { id: '7', title: 'Название 4', prices: { '41': 5500, '42': '6500', '43': 7500 }, description: 'Синего цвета, прямые', img: Nike7, sizes: ['41', '42', '43'], category: 'Новое' },
-  { id: '8', title: 'Название 5', prices: { '41': 12000, '42': 13000, '43': 14000 }, description: 'Зеленого цвета, теплая', img: Nike8, sizes: ['41', '42', '43'], category: 'Одежда' },
+  // ... продукты
 ];
 
 const getTotalPrice = (items = []) => {
@@ -92,13 +86,10 @@ const ProductList = () => {
   };
 
   useEffect(() => {
-    // Фильтруем товары по категории
     let filtered = [];
     if (activeCategory === 'Новое') {
-      // Возвращаем все товары, независимо от категории
       filtered = products.slice().sort((a, b) => b.id - a.id);
     } else {
-      // Возвращаем товары только выбранной категории
       filtered = products.filter((product) => product.category === activeCategory);
     }
     setFilteredProducts(filtered);
@@ -122,6 +113,7 @@ const ProductList = () => {
               <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'product-item'} />
           ))}
         </div>
+        <Form addedItems={addedItems} /> {/* Передаем addedItems в Form */}
       </div>
   );
 };
