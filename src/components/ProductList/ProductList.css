@@ -36,17 +36,20 @@
 }
 .checkout-button {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
+    bottom: 20px; /* Можете настроить отступ от нижнего края страницы */
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto; /* Длина кнопки будет автоматически настраиваться в зависимости от содержимого */
+    padding: 10px 20px;
     background-color: #000;
     color: #fff;
     text-align: center;
     font-size: 20px;
     border: none;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 9999; /* Установка z-index */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .checkout-button:hover {
