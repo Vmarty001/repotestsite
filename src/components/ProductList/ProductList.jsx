@@ -36,8 +36,19 @@ const ProductList = () => {
   const { tg, queryId } = useTelegram();
 
   const onSendData = useCallback(() => {
-    history.push('/form');
-  }, [history]);
+    const data = {
+      products: addedItems,
+      totalPrice: getTotalPrice(addedItems),
+      queryId,
+    };
+    fetch('http://45.89.188.162:8000/web-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  }, [addedItems, queryId]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', onSendData);
