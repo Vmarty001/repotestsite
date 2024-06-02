@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Импорт Link для маршрутизации
 import Nike from './images/pinknike.jpg';
 import Nike1 from './images/2023-11-10 23.55.38.jpg';
 import Nike3 from './images/2023-11-10 23.55.33.jpg';
@@ -34,7 +34,6 @@ const ProductList = () => {
   const [activeCategory, setActiveCategory] = useState('Новое');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const { tg, queryId } = useTelegram();
-  const navigate = useNavigate();
 
   const onSendData = useCallback(() => {
     const data = {
@@ -104,8 +103,8 @@ const ProductList = () => {
   }, [activeCategory]);
 
   return (
-      <div className="product-list">
-        <div className="categories">
+      <div className={'product-list'}>
+        <div className={'categories'}>
           <button onClick={() => setActiveCategory('Новое')} className={activeCategory === 'Новое' ? 'active' : ''}>
             Новое
           </button>
@@ -116,16 +115,14 @@ const ProductList = () => {
             Одежда
           </button>
         </div>
-        <div className="product-list-items">
+        <div className={'product-list-items'}>
           {filteredProducts.map((item) => (
-              <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className="product-item" />
+              <ProductItem key={item.id} product={item} onAdd={onAdd} onRemove={onRemove} className={'product-item'} />
           ))}
         </div>
-        {addedItems.length > 0 && (
-            <button className="checkout-button" onClick={() => navigate('/form')}>
-              Перейти к оформлению
-            </button>
-        )}
+        <Link to="/form" state={{ addedItems }}>
+          <button className="checkout-button">Перейти к оформлению</button>
+        </Link>
       </div>
   );
 };
