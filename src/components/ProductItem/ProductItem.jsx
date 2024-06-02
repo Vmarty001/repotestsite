@@ -15,7 +15,6 @@ const ProductItem = ({ product, className, onAdd, onRemove }) => {
             setSelectedProduct(null);
         }
 
-        // Вычисляем минимальную цену среди всех размеров
         const prices = Object.values(product.prices);
         setMinPrice(Math.min(...prices));
     }, [product, selectedSize]);
