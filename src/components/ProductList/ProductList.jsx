@@ -122,7 +122,7 @@ const ProductList = () => {
         </div>
         {addedItems.length > 0 && (
             <Link to='/form' state={{ addedItems }}> {/* Передача списка добавленных товаров через параметры запроса */}
-              <button className="checkout-button">Перейти к оформлению</button>
+              <button className="checkout-button"> Купить ${getTotalPrice(updatedItems)}</button>
             </Link>
         )}
       </div>
