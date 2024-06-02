@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './ProductList.css';
 import ProductItem from '../ProductItem/ProductItem';
 import { useTelegram } from '../../hooks/useTelegram';
-import { Link } from 'react-router-dom'; // Импорт Link для маршрутизации
+import { Link } from 'react-router-dom';
 import Nike from './images/pinknike.jpg';
 import Nike1 from './images/2023-11-10 23.55.38.jpg';
 import Nike3 from './images/2023-11-10 23.55.33.jpg';
