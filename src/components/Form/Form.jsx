@@ -56,59 +56,59 @@ const Form = () => {
         setPhone(e.target.value);
     };
 
-
-        const onChangeSubject = (e) => {
-            setSubject(e.target.value);
-        };
-
-        return (
-            <div className="form">
-                <h3>Введите ваши данные</h3>
-                <input
-                    className="input"
-                    type="text"
-                    placeholder="Город"
-                    value={city}
-                    onChange={onChangeCity}
-                />
-                <input
-                    className="input"
-                    type="text"
-                    placeholder="Адрес"
-                    value={sdekaddress}
-                    onChange={onChangeSdek}
-                />
-                <input
-                    className="input"
-                    type="text"
-                    placeholder="Телефон"
-                    value={phone}
-                    onChange={onChangePhone}
-                />
-                <select value={subject} onChange={onChangeSubject} className="select">
-                    <option value="physical">Физ. лицо</option>
-                    <option value="legal">Юр. лицо</option>
-                </select>
-
-                <h3>Товары в корзине</h3>
-                <div className="cart-items">
-                    {addedItems.length > 0 ? (
-                        addedItems.map((item) => (
-                            <div key={item.id} className="cart-item">
-                                <img src={item.img} alt={item.title} />
-                                <div className="cart-item-info">
-                                    <div className="cart-item-title">{item.title}</div>
-                                    <div className="cart-item-size">Размер: {item.selectedSize}</div>
-                                    <div className="cart-item-price">Цена: {item.price} ₽</div>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <div>Корзина пуста</div>
-                    )}
-                </div>
-            </div>
-        );
+    const onChangeSubject = (e) => {
+        setSubject(e.target.value);
     };
 
-    export default Form;
+    return (
+        <div className="form">
+            <h3>Введите ваши данные</h3>
+            <input
+                className="input"
+                type="text"
+                placeholder="Город"
+                value={city}
+                onChange={onChangeCity}
+            />
+            <input
+                className="input"
+                type="text"
+                placeholder="Адрес"
+                value={sdekaddress}
+                onChange={onChangeSdek}
+            />
+            <input
+                className="input"
+                type="text"
+                placeholder="Телефон"
+                value={phone}
+                onChange={onChangePhone}
+            />
+            <select value={subject} onChange={onChangeSubject} className="select">
+                <option value="physical">Физ. лицо</option>
+                <option value="legal">Юр. лицо</option>
+            </select>
+
+            <h3>Товары в корзине</h3>
+            <ul className="cart-list">
+                {addedItems.length > 0 ? (
+                    addedItems.map((item) => (
+                        <li key={item.id} className="cart-item">
+                            <img src={item.img} alt={item.title} className="cart-item-img" />
+                            <div className="cart-item-details">
+                                <p className="cart-item-title">{item.title}</p>
+                                <p className="cart-item-description">{item.description}</p>
+                                <p className="cart-item-size">Размер: {item.selectedSize}</p>
+                                <p className="cart-item-price">Цена: {item.price} ₽</p>
+                            </div>
+                        </li>
+                    ))
+                ) : (
+                    <div>Корзина пуста</div>
+                )}
+            </ul>
+        </div>
+    );
+};
+
+export default Form;
