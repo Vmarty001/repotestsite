@@ -8,9 +8,13 @@ const Form = () => {
     const [sdekaddress, setSdek] = useState('');
     const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('physical');
+    const [phoneError, setPhoneError] = useState('');
     const { tg } = useTelegram();
     const location = useLocation();
     const { addedItems } = location.state || { addedItems: [] };
+
+    const validateCity = (value) => /^[a-zA-Zа-яА-Я\s]+$/.test(value);
+    const validatePhone = (value) => /^\+7\d{10}$/.test(value);
 
     const onSendData = useCallback(() => {
         const data = {
@@ -43,15 +47,18 @@ const Form = () => {
     }, [tg.MainButton]);
 
     useEffect(() => {
-        if (!city || !sdekaddress || !phone) {
+        if (!city || !sdekaddress || !phone || phoneError) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
         }
-    }, [city, sdekaddress, phone]);
+    }, [city, sdekaddress, phone, phoneError]);
 
     const onChangeCity = (e) => {
-        setCity(e.target.value);
+        const value = e.target.value;
+        if (validateCity(value)) {
+            setCity(value);
+        }
     };
 
     const onChangeSdek = (e) => {
@@ -59,13 +66,18 @@ const Form = () => {
     };
 
     const onChangePhone = (e) => {
-        setPhone(e.target.value);
+        const value = e.target.value;
+        if (validatePhone(value)) {
+            setPhoneError('');
+        } else {
+            setPhoneError('Неправильный номер.');
+        }
+        setPhone(value);
     };
 
     const onChangeSubject = (e) => {
         setSubject(e.target.value);
     };
-
 
     return (
         <div className="form">
@@ -104,17 +116,17 @@ const Form = () => {
                 onChange={onChangeSdek}
             />
             <input
-                className="input"
+                className={`input ${phoneError ? 'input-error' : ''}`}
                 type="text"
                 placeholder="Телефон"
                 value={phone}
                 onChange={onChangePhone}
             />
+            {phoneError && <div className="error">{phoneError}</div>}
             <select value={subject} onChange={onChangeSubject} className="select">
                 <option value="physical">Физ. лицо</option>
                 <option value="legal">Юр. лицо</option>
             </select>
-
         </div>
     );
 };
