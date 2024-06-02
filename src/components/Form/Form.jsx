@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import './Form.css';
 import { useTelegram } from "../../hooks/useTelegram";
 
-const Form = () => {
+const Form = ({ cart }) => {
     const [city, setCity] = useState('');
     const [sdekaddress, setSdek] = useState('');
     const [phone, setPhone] = useState('');
@@ -14,10 +14,11 @@ const Form = () => {
             city,
             sdekaddress,
             subject,
-            phone, // Fixed typo here, changed setSubject to setPhone
+            phone,
+            cart
         };
         tg.sendData(JSON.stringify(data));
-    }, [city, sdekaddress, subject, phone]);
+    }, [city, sdekaddress, subject, phone, cart]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -49,7 +50,7 @@ const Form = () => {
     };
 
     const onChangePhone = (e) => {
-        setPhone(e.target.value); // Fixed typo here, changed setSubject to setPhone
+        setPhone(e.target.value);
     };
 
     const onChangeSubject = (e) => {
@@ -84,6 +85,15 @@ const Form = () => {
                 <option value={'physical'}>Физ. лицо</option>
                 <option value={'legal'}>Юр. лицо</option>
             </select>
+
+            <h3>Товары в корзине</h3>
+            <ul>
+                {cart.map(item => (
+                    <li key={item.id}>
+                        {item.title} - {item.selectedSize} - {item.price} руб.
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };
