@@ -27,7 +27,7 @@ const Form = () => {
             })),
         };
         tg.sendData(JSON.stringify(data));
-    }, [city, sdekaddress, subject, phone, addedItems,item.title]);
+    }, [city, sdekaddress, subject, phone, addedItems]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
