@@ -11,7 +11,7 @@ import Nike5 from './images/2023-11-10 23.55.27.jpg';
 import Nike6 from './images/2023-11-10 23.55.19.jpg';
 import Nike7 from './images/2023-11-10 23.55.15.jpg';
 import Nike8 from './images/2023-11-10 23.55.10.jpg';
-import ballenciaga from 'https://images.51microshop.com/713/product/20180725/copy_of_Balenciaga_BB_logo_T_shirts_1532528558481_4.jpg';
+import ballenciaga from './images/balenciaga.webp';
 
 const products = [
   { id: '1', title: 'Nike Air Max', prices: { '41': 1500, '42': 6000, '43': 7000 }, description: 'Мягкая подошва', img: Nike, sizes: ['41', '42', '43'], category: 'Новое' },
