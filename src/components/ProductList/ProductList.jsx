@@ -14,8 +14,8 @@ import Nike8 from './images/2023-11-10 23.55.10.jpg';
 import ballenciaga from './images/balenciaga.webp';
 import offsweet from './images/6705660585.jpg'
 import trusi from './images/slide_20.webp'
-import cep from './images/cep.png'
-import jinsi from './images/jinsi.webp'
+import rolex from './images/rolex.jpeg'
+import hudi from './images/hudi.avif'
 
 const products = [
   { id: '1', title: 'Nike Air Max', prices: { '41': 1500, '42': 6000, '43': 7000 }, description: 'Мягкая подошва', img: Nike, sizes: ['41', '42', '43'], category: 'Новое' },
@@ -24,8 +24,8 @@ const products = [
   { id: '4', title: 'Свитшот OffWhite', prices: { 'S': 5551, 'M': 133, 'XL': 144 }, description: 'Демисезон', img: offsweet, sizes: ['S', 'M', 'XL'], category: 'Одежда' },
   { id: '5', title: 'Трусы CK', prices: { 'XS': 1321, 'S': 6000, 'L': 7000 }, description: 'Мужские. Новая коллекция', img: trusi, sizes: ['XS', 'S', 'L'], category: 'Одежда' },
   { id: '6', title: 'Nike Dunk', prices: { '41': 1555, '42': 700, '43': 800 }, description: 'Эксклюзив. Импортные.', img: Nike6, sizes: ['41', '42', '43'], category: 'Кроссовки' },
-  { id: '7', title: 'Цепь', prices: { '6,35': 1943, '8,25': 6500, '9,5': 7500 }, description: 'Золото, мужская', img: cep, sizes: ['6,35', '8,25', '9,5'], category: 'Новое' },
-  { id: '8', title: 'Джинсы Collab', prices: { 'M': 12, 'L': 13000}, description: 'Синего цвета, зауженные', img: jinsi, sizes: ['M', 'L'], category: 'Одежда' },
+  { id: '7', title: 'Цепь', prices: { '6,35': 1943, '8,25': 6500, '9,5': 7500 }, description: 'Золото, мужская', img: rolex, sizes: ['6,35', '8,25', '9,5'], category: 'Новое' },
+  { id: '8', title: 'Худи Collab', prices: { 'M': 12, 'L': 13000}, description: 'Синего цвета, зауженные', img: hudi, sizes: ['M', 'L'], category: 'Одежда' },
 ];
 
 const getTotalPrice = (items = []) => {
