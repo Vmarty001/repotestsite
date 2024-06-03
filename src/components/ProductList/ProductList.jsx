@@ -10,7 +10,7 @@ import Nike4 from './images/2023-11-10 23.55.23.jpg';
 import Nike5 from './images/2023-11-10 23.55.27.jpg';
 import Nike6 from './images/2023-11-10 23.55.19.jpg';
 import Nike7 from './images/2023-11-10 23.55.15.jpg';
-import Nike8 from './images/2023-11-10 23.55.10.jpg';
+import Nike8 from './images/2023-11-10 23.55.10.png';
 import ballenciaga from './images/balenciaga.webp';
 
 const products = [
