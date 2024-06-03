@@ -17,7 +17,6 @@ const Form = () => {
         const data = {
             city,
             sdekaddress,
-            subject,
             phone,
             addedItems: addedItems.map(item => ({
                 id: item.id,
@@ -28,7 +27,7 @@ const Form = () => {
             })),
         };
         tg.sendData(JSON.stringify(data));
-    }, [city, sdekaddress, subject, phone, addedItems]);
+    }, [city, sdekaddress, phone, addedItems]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -68,9 +67,7 @@ const Form = () => {
         setPhoneError(!(value.startsWith('+7') && value.length === 12));
     };
 
-    const onChangeSubject = (e) => {
-        setSubject(e.target.value);
-    };
+
 
     // Функция прокрутки страницы вниз
     const scrollToBottom = () => {
@@ -139,10 +136,6 @@ const Form = () => {
                 onChange={onChangePhone}
             />
             {phoneError && <div className="error">Неправильный номер.</div>}
-            <select value={subject} onChange={onChangeSubject} className="select">
-                <option value="physical">Физ. лицо</option>
-                <option value="legal">Юр. лицо</option>
-            </select>
         </div>
     );
 };
